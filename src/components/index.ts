@@ -7,6 +7,7 @@ export * from './common/Buttom';
 export * from './common/SpanLink';
 export * from './common/AccountMenu';
 export * from './common/BreadCrumb';
+export * from './common/Table';
 
 // Form
 export * from './form/InputText';
