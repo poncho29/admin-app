@@ -29,8 +29,7 @@ const columns = [
   }
 ]
 
-export const Home = () => {
-  
+export const Stores = () => {
   return (
     <div className="w-full">
       <Table data={stores} columns={columns} />

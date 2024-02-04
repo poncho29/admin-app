@@ -12,3 +12,4 @@ export * from './common/Table';
 // Form
 export * from './form/InputText';
 export * from './form/InputCheck';
+export * from './form/InputDobounced';

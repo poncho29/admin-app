@@ -3,3 +3,6 @@ export * from './auth';
 
 // Store
 export * from './store';
+
+// User
+export * from './user'
