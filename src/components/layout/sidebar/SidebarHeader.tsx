@@ -1,7 +1,5 @@
 import { RiMenuFill } from "react-icons/ri";
 
-import Logo from '../../../assets/images/logo.png';
-
 interface Props {
   showSidebar: boolean;
   onShowSidebar: (e: boolean) => void;
@@ -16,11 +14,9 @@ export const SidebarHeader = ({ showSidebar, onShowSidebar }: Props) => {
       `}
     >
       {showSidebar && (
-        <img
-          src={Logo}
-          alt="logo teleprompter"
-          className="w-4/5 object-cover"
-        />
+        <span className="block w-4/5 text-2xl text-start text-slate-200 font-medium uppercase">
+          Vase Admin
+        </span>
       )}
       <RiMenuFill
         color="#FFF"
