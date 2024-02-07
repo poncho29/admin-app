@@ -9,6 +9,9 @@ export default {
       backgroundImage: {
         'banner-auth': "url('assets/images/banner-auth.jpg')",
       },
+      zIndex: {
+        '100': '100'
+      },
     },
   },
   plugins: [],
