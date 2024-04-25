@@ -2,7 +2,8 @@ import {
   flexRender,
   useReactTable,
   getCoreRowModel,
-  getPaginationRowModel
+  getPaginationRowModel,
+  getFilteredRowModel
 } from '@tanstack/react-table';
 import type { ColumnDef } from '@tanstack/react-table';
 
@@ -41,6 +42,7 @@ export const Table =  <T extends object>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
   });
 
   const getStyle = (icon: 'edit' | 'delete' | 'view') => {
@@ -71,16 +73,33 @@ export const Table =  <T extends object>({
 
   return (
     <div className="overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="w-full flex items-center justify-between gap-2 px-6 py-4">
+        <input type="text" placeholder="Buscar..." />
+      </div>
       <table className="w-full text-sm text-left rtl:text-right">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id} className="text-xs text-white uppercase bg-sky-800">
+            <tr
+              key={headerGroup.id}
+              className="text-xs text-white uppercase bg-sky-800"
+            >
               {headerGroup.headers.map((header) => (
-                <th key={header.id} scope="col" className="text-nowrap px-4 py-2">
+                <th
+                  key={header.id}
+                  scope="col"
+                  className="text-nowrap px-4 py-2 cursor-pointer"
+                  {...{
+                    onClick: header.column.getToggleSortingHandler(),
+                  }}
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(header.column.columnDef.header, header.getContext())
                   }
+                  {{
+                    asc: '🔼',
+                    desc: '🔽',
+                  }[header.column.getIsSorted() as string] ?? null}
                 </th>
               ))}
               {controls.length > 0 && (

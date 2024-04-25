@@ -1,17 +1,24 @@
-import { Buttom, InputText, Table } from "../../../components";
+import { useState } from "react";
+
+import { IoMdAdd } from "react-icons/io";
+
+import { Buttom, InputText, Table, Modal } from "../../../components";
 
 import { stores } from "../../../assets/data";
 
 import { Store } from "../../../interfaces";
 
-import { IoMdAdd } from "react-icons/io";
-import { useState } from "react";
-import { Modal } from "../../../components/common/Modal";
+import { ColumnDef } from "@tanstack/react-table";
 
-const columns = [
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const columns: ColumnDef<Store, any>[] = [
   {
     header: 'Nombre',
-    accessorKey: 'name'
+    accessorKey: 'name',
+    accessorFn: (row) => row.name,
+    cell: info => info.getValue(),
+    footer: info => info.column.id
   },
   {
     header: 'Ubicación',

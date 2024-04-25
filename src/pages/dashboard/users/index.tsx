@@ -1,34 +1,51 @@
-import { Table } from "../../../components";
+import { Column, TableCustom } from "../../../components";
 
 import { users } from "../../../assets/data";
 
-const columns = [
+import { User } from "../../../interfaces";
+
+const columns: Column<User>[] = [
   {
     header: 'Nombre',
-    accessorKey: 'name'
+    accessor: 'name'
   },
   {
     header: 'Correo',
-    accessorKey: 'email'
+    accessor: 'email'
   },
   {
     header: 'Cedula',
-    accessorKey: 'cedula'
+    accessor: 'cedula'
   },
   {
     header: 'Nombre de la tienda',
-    accessorKey: 'nameStore'
+    accessor: 'nameStore'
   },
   {
     header: 'Ciudad',
-    accessorKey: 'city'
+    accessor: 'city'
   }
 ]
 
 export const Users = () => {
   return (
     <div className="w-full">
-      <Table data={users} columns={columns} />
+      <TableCustom
+        data={users}
+        columns={columns}
+        controls={[
+          {
+            icon: 'edit',
+            text: 'Editar',
+            onClick: (item) => console.log(item)
+          },
+          {
+            icon: 'delete',
+            text: 'Desactivar',
+            onClick: (item) => console.log(item)
+          }
+        ]}
+      />
     </div>
   )
 }

@@ -8,6 +8,8 @@ export * from './common/SpanLink';
 export * from './common/AccountMenu';
 export * from './common/BreadCrumb';
 export * from './common/Table';
+export * from './common/TableCustom';
+export * from './common/Modal';
 
 // Form
 export * from './form/InputText';
