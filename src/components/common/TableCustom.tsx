@@ -1,5 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 import { MdDeleteForever, MdEditSquare, MdRemoveRedEye } from "react-icons/md";
+
 import { Buttom } from "./Buttom";
+import { PaginationTable } from "./PaginationTable";
 
 export type Column<T> = {
   header: string;
@@ -17,8 +21,48 @@ interface Props <T>{
 }
 
 export const TableCustom = <T,>({ data, columns, controls = [], }: Props<T>) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const convertToReactNode = (value: any): React.ReactNode => {
+
+  const [finalData, setFinalData] = useState<T[]>([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalPage: 1,
+    pageSize: 5
+  });
+
+  useEffect(() => {
+    const total = Math.floor(data.length / pagination.pageSize);
+    const newData = handlePaginteData(data);
+
+    setPagination(old => ({ ...old, totalPage: total }));
+    setFinalData(newData);
+  }, []);
+
+  useEffect(() => {
+    const newData = handlePaginteData(data);
+    setFinalData(newData);
+  }, [pagination.page]);
+  
+  useEffect(() => {
+    const total = Math.floor(data.length / pagination.pageSize);
+    setPagination(old => ({ ...old, page: 1, totalPage: total }));
+  }, [pagination.pageSize]);
+
+  const handleChangePage = (newPage: number) => {
+    setPagination(old => ({ ...old, page: newPage }));
+  }
+
+  const handleChangePageSize = (newPageSize: number) => {
+    setPagination(old => ({ ...old, pageSize: newPageSize }));
+  }
+
+  const handlePaginteData = (data: T[]) => {
+    const start = pagination.page === 1 ? 0 : (pagination.page * pagination.pageSize) - pagination.pageSize;
+    const end = pagination.page * pagination.pageSize;
+
+    return data.slice(start, end);
+  }
+
+  const convertToReactNode = (value: unknown): React.ReactNode => {
     if (value === null || value === undefined) {
       return '';
     } else if (typeof value === 'boolean') {
@@ -57,12 +101,18 @@ export const TableCustom = <T,>({ data, columns, controls = [], }: Props<T>) => 
   }
 
   return (
-    <div className="relative overflow-x-auto">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
+    <div className="overflow-x-auto shadow-md sm:rounded-lg">
+      <table className="w-full text-sm text-left rtl:text-right">
+        <thead className="">
+          <tr
+            className="text-xs text-white uppercase bg-sky-800"
+          >
             {columns.map(({ header }) => (
-              <th key={header} scope="col" className="px-6 py-3">
+              <th
+                key={header}
+                scope="col"
+                className="text-nowrap px-4 py-2 cursor-pointer"
+              >
                 { header }
               </th>
             ))}
@@ -78,15 +128,24 @@ export const TableCustom = <T,>({ data, columns, controls = [], }: Props<T>) => 
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
-            <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          {finalData.map((item, index) => (
+            <tr
+              key={index}
+              className="text-gray-900 border-b bg-white"
+            >
               {columns.map(({ accessor }) => (
-                <td key={String(accessor)} className="px-6 py-4">
+                <td
+                  key={String(accessor)}
+                  className="text-nowrap px-4 py-2"
+                >
                   {convertToReactNode(item[accessor])}
                 </td>
               ))}
               {controls.length > 0 && (
-                <td key="controls-body" className="flex gap-2 px-4 py-2">
+                <td
+                  key="controls-body"
+                  className="flex gap-2 px-4 py-2"
+                >
                   {controls.map(({ text, icon, onClick }) => (
                     <Buttom
                       key={text}
@@ -103,6 +162,14 @@ export const TableCustom = <T,>({ data, columns, controls = [], }: Props<T>) => 
           ))}
         </tbody>
       </table>
+
+      <PaginationTable
+        page={pagination.page}
+        totalPages={pagination.totalPage}
+        pageSize={pagination.pageSize}
+        onChangePage={handleChangePage}
+        onChangePageSize={handleChangePageSize}
+      />
     </div>
   )
 }
