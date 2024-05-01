@@ -25,7 +25,9 @@ const columns: Column<User>[] = [
     header: 'Ciudad',
     accessor: 'city'
   }
-]
+];
+
+const searchableFields: (keyof User)[] = ['name', 'email', 'cedula', 'nameStore', 'city'];
 
 export const Users = () => {
   return (
@@ -45,6 +47,7 @@ export const Users = () => {
             onClick: (item) => console.log(item)
           }
         ]}
+        searchableFields={searchableFields}
       />
     </div>
   )
