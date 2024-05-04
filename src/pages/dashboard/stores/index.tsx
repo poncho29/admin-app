@@ -37,7 +37,9 @@ const columns: Column<Store>[] = [
     accessor: 'paymentDate',
     sorteable: true
   }
-]
+];
+
+const searchableFields: (keyof Store)[] = ['name', 'location', 'category', 'price', 'paymentDate'];
 
 export const Stores = () => {
   const [crateStore, setCrateStore] = useState(false);
@@ -71,6 +73,7 @@ export const Stores = () => {
             onClick: (item) => console.log(item)
           }
         ]}
+        searchableFields={searchableFields}
       />
 
       <Modal isOpen={crateStore} onClose={() => setCrateStore(false)}>

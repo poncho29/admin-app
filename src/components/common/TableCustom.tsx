@@ -1,10 +1,9 @@
 import { MdDeleteForever, MdEditSquare, MdRemoveRedEye } from "react-icons/md";
 
-import { usePagination } from "../../hooks/usePagination";
+import { usePagination, useTableFilter } from "../../hooks";
 
 import { Buttom } from "./Buttom";
 import { PaginationTable } from "./PaginationTable";
-import { useState } from "react";
 
 export type Column<T> = {
   header: string;
@@ -21,59 +20,33 @@ interface Props <T>{
     icon: 'edit' | 'delete' | 'view';
     onClick: (item: T) => void;
   }[];
-  // searchableFields?: (keyof T)[];
+  searchableFields?: (keyof T)[];
 }
 
 export const TableCustom = <T,>({
   data,
   columns,
   controls = [],
-  // searchableFields = [],
+  searchableFields = [],
 }: Props<T>) => {
-  const [dataTable, setDataTable] = useState<T[]>(data);
-  const [renderColumns, setRenderColumns] = useState(columns);
-
-  const handleSortByColumn = (column: Column<T>) => {
-    if (column.sorteable) {
-      let copyData = [...dataTable];
-
-      renderColumns.forEach((col) => {
-        if (col.accessor === column.accessor) {
-          col.sortOrder = col.sortOrder === 'asc' 
-            ? 'desc' : col.sortOrder === 'desc'
-            ? null : 'asc'
-        } else {
-          delete col.sortOrder;
-        }
-      });
-
-      if (column.sortOrder === 'asc') {
-        copyData.sort((a, b) => {
-          if (a[column.accessor] < b[column.accessor]) return -1;
-          if (a[column.accessor] > b[column.accessor]) return 1;
-          return 0;
-        });
-      } else if (column.sortOrder === 'desc') {
-        copyData.sort((a, b) => {
-          if (a[column.accessor] > b[column.accessor]) return -1;
-          if (a[column.accessor] < b[column.accessor]) return 1;
-          return 0;
-        });
-      } else {
-        copyData = [...data];
-      }
-
-      setRenderColumns(renderColumns);
-      setDataTable(copyData);
-    }
-  }
+  const {
+    filteredData,
+    renderColumns,
+    search,
+    handleSetSearch,
+    handleSetColumn
+  } = useTableFilter({
+    data,
+    columns,
+    searchableFields
+  });
 
   const {
     paginatedData,
     pagination,
     handleChangePage,
     handleChangePageSize
-  } = usePagination({ data: dataTable, pageSize: 5 });
+  } = usePagination({ data: filteredData, pageSize: 5 });
 
   const getStyle = (icon: 'edit' | 'delete' | 'view') => {
     switch (icon) {
@@ -114,16 +87,18 @@ export const TableCustom = <T,>({
   };  
 
   return (
-    <div className="overflow-x-auto shadow-md sm:rounded-lg">
-      {/* <div className="w-full flex items-center justify-between gap-2 px-6 py-4">
-        <input
-          type="text"
-          placeholder="Buscar..."
-          className="p-1  border border-slate-200 rounded-lg focus:outline-none"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div> */}
+    <div className="overflow-x-auto shadow-md bg-white sm:rounded-lg">
+      {searchableFields.length > 0 && (
+        <div className="w-full flex items-center justify-end gap-2 px-6 py-4">
+          <input
+            type="search"
+            placeholder="Buscar..."
+            className="p-1  border border-slate-200 rounded-lg focus:outline-none"
+            value={search}
+            onChange={handleSetSearch}
+          />
+        </div>
+      )}
 
       <table className="w-full text-sm text-left rtl:text-right">
         <thead className="">
@@ -135,7 +110,7 @@ export const TableCustom = <T,>({
                 key={col.header}
                 scope="col"
                 className={`text-nowrap px-4 py-2 ${col.sorteable ? 'cursor-pointer' : 'cursor-default'}`}
-                onClick={() => col.sorteable && handleSortByColumn(col)}
+                onClick={() => col.sorteable && handleSetColumn(col)}
               >
                 { col.header }
                 
@@ -143,7 +118,10 @@ export const TableCustom = <T,>({
                   <span
                     className="ml-2"
                   >
-                    {col.sortOrder === 'asc' ? '▲' : '▼'}
+                    {
+                      col.sortOrder === 'asc' ? '▲' : 
+                      col.sortOrder === 'desc' ? '▼' : null
+                    }
                   </span>
                 )}
               </th>
