@@ -4,10 +4,13 @@ import { usePagination } from "../../hooks/usePagination";
 
 import { Buttom } from "./Buttom";
 import { PaginationTable } from "./PaginationTable";
+import { useState } from "react";
 
 export type Column<T> = {
   header: string;
   accessor: keyof T;
+  sorteable?: boolean;
+  sortOrder?: 'asc' | 'desc' | null;
 }
 
 interface Props <T>{
@@ -27,12 +30,50 @@ export const TableCustom = <T,>({
   controls = [],
   // searchableFields = [],
 }: Props<T>) => {
+  const [dataTable, setDataTable] = useState<T[]>(data);
+  const [renderColumns, setRenderColumns] = useState(columns);
+
+  const handleSortByColumn = (column: Column<T>) => {
+    if (column.sorteable) {
+      let copyData = [...dataTable];
+
+      renderColumns.forEach((col) => {
+        if (col.accessor === column.accessor) {
+          col.sortOrder = col.sortOrder === 'asc' 
+            ? 'desc' : col.sortOrder === 'desc'
+            ? null : 'asc'
+        } else {
+          delete col.sortOrder;
+        }
+      });
+
+      if (column.sortOrder === 'asc') {
+        copyData.sort((a, b) => {
+          if (a[column.accessor] < b[column.accessor]) return -1;
+          if (a[column.accessor] > b[column.accessor]) return 1;
+          return 0;
+        });
+      } else if (column.sortOrder === 'desc') {
+        copyData.sort((a, b) => {
+          if (a[column.accessor] > b[column.accessor]) return -1;
+          if (a[column.accessor] < b[column.accessor]) return 1;
+          return 0;
+        });
+      } else {
+        copyData = [...data];
+      }
+
+      setRenderColumns(renderColumns);
+      setDataTable(copyData);
+    }
+  }
+
   const {
     paginatedData,
     pagination,
     handleChangePage,
     handleChangePageSize
-  } = usePagination({data, pageSize: 5 });
+  } = usePagination({ data: dataTable, pageSize: 5 });
 
   const getStyle = (icon: 'edit' | 'delete' | 'view') => {
     switch (icon) {
@@ -64,7 +105,7 @@ export const TableCustom = <T,>({
     if (value === null || value === undefined) {
       return '';
     } else if (typeof value === 'boolean') {
-      return value;
+      return value ? 'Activo' : 'Inactivo';
     } else if (typeof value === 'string' || typeof value === 'number') {
       return value;
     } else {
@@ -89,20 +130,29 @@ export const TableCustom = <T,>({
           <tr
             className="text-xs text-white uppercase bg-sky-800"
           >
-            {columns.map(({ header }) => (
+            {renderColumns.map((col) => (
               <th
-                key={header}
+                key={col.header}
                 scope="col"
-                className="text-nowrap px-4 py-2 cursor-pointer"
+                className={`text-nowrap px-4 py-2 ${col.sorteable ? 'cursor-pointer' : 'cursor-default'}`}
+                onClick={() => col.sorteable && handleSortByColumn(col)}
               >
-                { header }
+                { col.header }
+                
+                {col.sorteable && col.sortOrder && (
+                  <span
+                    className="ml-2"
+                  >
+                    {col.sortOrder === 'asc' ? '▲' : '▼'}
+                  </span>
+                )}
               </th>
             ))}
             {controls.length > 0 && (
               <th
                 key="controls-head"
                 scope="col"
-                className="text-center text-nowrap px-4 py-2"
+                className="text-center text-nowrap px-4 py-2 cursor-default"
               >
                 Acciones
               </th>

@@ -2,43 +2,40 @@ import { useState } from "react";
 
 import { IoMdAdd } from "react-icons/io";
 
-import { Buttom, InputText, Table, Modal } from "../../../components";
+import { Buttom, InputText, Modal, Column, TableCustom } from "../../../components";
 
 import { stores } from "../../../assets/data";
 
 import { Store } from "../../../interfaces";
 
-import { ColumnDef } from "@tanstack/react-table";
-
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const columns: ColumnDef<Store, any>[] = [
+const columns: Column<Store>[] = [
   {
     header: 'Nombre',
-    accessorKey: 'name',
-    accessorFn: (row) => row.name,
-    cell: info => info.getValue(),
-    footer: info => info.column.id
+    accessor: 'name',
+    sorteable: true
   },
   {
     header: 'Ubicación',
-    accessorKey: 'location'
+    accessor: 'location',
+    sorteable: true
   },
   {
     header: 'Categoría',
-    accessorKey: 'category'
+    accessor: 'category',
+    sorteable: true
   },
   {
     header: 'Estado',
-    accessorKey: 'status'
+    accessor: 'status'
   },
   {
     header: 'Precio',
-    accessorKey: 'price'
+    accessor: 'price'
   },
   {
     header: 'Fecha de pago',
-    accessorKey: 'paymentDate'
+    accessor: 'paymentDate',
+    sorteable: true
   }
 ]
 
@@ -59,19 +56,19 @@ export const Stores = () => {
         </Buttom>
       </div>
 
-      <Table
+      <TableCustom
         data={stores}
         columns={columns}
         controls={[
           {
             icon: 'edit',
             text: 'Editar',
-            action: (item: Store) => console.log(item)
+            onClick: (item) => console.log(item)
           },
           {
             icon: 'delete',
             text: 'Desactivar',
-            action: (item: Store) => console.log(item)
+            onClick: (item) => console.log(item)
           }
         ]}
       />

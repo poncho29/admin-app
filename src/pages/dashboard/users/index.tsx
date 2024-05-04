@@ -27,7 +27,7 @@ const columns: Column<User>[] = [
   }
 ];
 
-const searchableFields: (keyof User)[] = ['name', 'email', 'cedula', 'nameStore', 'city'];
+// const searchableFields: (keyof User)[] = ['name', 'email', 'cedula', 'nameStore', 'city'];
 
 export const Users = () => {
   return (
@@ -47,7 +47,7 @@ export const Users = () => {
             onClick: (item) => console.log(item)
           }
         ]}
-        searchableFields={searchableFields}
+        // searchableFields={searchableFields}
       />
     </div>
   )
