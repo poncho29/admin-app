@@ -1,6 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef, useState } from "react";
 import { MdDeleteForever, MdEditSquare, MdRemoveRedEye } from "react-icons/md";
+
+import { usePagination } from "../../hooks/usePagination";
 
 import { Buttom } from "./Buttom";
 import { PaginationTable } from "./PaginationTable";
@@ -18,97 +18,21 @@ interface Props <T>{
     icon: 'edit' | 'delete' | 'view';
     onClick: (item: T) => void;
   }[];
-  searchableFields?: (keyof T)[];
+  // searchableFields?: (keyof T)[];
 }
 
 export const TableCustom = <T,>({
   data,
   columns,
   controls = [],
-  searchableFields = [],
+  // searchableFields = [],
 }: Props<T>) => {
-  const isMounted = useRef(false);
-
-  const [finalData, setFinalData] = useState<T[]>([]);
-  const [search, setSearch] = useState('');
-  const [pagination, setPagination] = useState({
-    page: 1,
-    totalPage: 1,
-    pageSize: 5
-  });
-
-  useEffect(() => {
-    console.log(isMounted.current);
-    const total = Math.ceil(data.length / pagination.pageSize);
-    const newData = handlePaginteData(data);
-
-    setPagination(old => ({ ...old, totalPage: total }));
-    setFinalData(newData);
-
-    if (!isMounted.current) {
-      isMounted.current = true;
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!isMounted.current) return;
-
-    const filterData = handleSearchTerm(search);
-    const total = Math.ceil(data.length / pagination.pageSize);
-    setPagination(old => ({ ...old,  totalPage: total }));
-    console.log(filterData);
-  }, [search]);
-
-  useEffect(() => {
-    if (!isMounted.current) return;
-
-    const newData = handlePaginteData(data);
-    setFinalData(newData);
-  }, [pagination.page]);
-  
-  useEffect(() => {
-    if (!isMounted.current) return;
-
-    const total = Math.ceil(data.length / pagination.pageSize);
-    setPagination(old => ({ ...old, page: 1, totalPage: total }));
-  }, [pagination.pageSize]);
-
-  // Functions
-  const handleSearchTerm = (term: string) => {
-    return data.filter((item) => {
-      return searchableFields.some((field) => {
-        const value = String(item[field]).toLowerCase();
-        return value.includes(term.toLowerCase());
-      });
-    });
-  };
-
-  const handleChangePage = (newPage: number) => {
-    setPagination(old => ({ ...old, page: newPage }));
-  }
-
-  const handleChangePageSize = (newPageSize: number) => {
-    setPagination(old => ({ ...old, pageSize: newPageSize }));
-  }
-
-  const handlePaginteData = (data: T[]) => {
-    const start = pagination.page === 1 ? 0 : (pagination.page * pagination.pageSize) - pagination.pageSize;
-    const end = pagination.page * pagination.pageSize;
-
-    return data.slice(start, end);
-  }
-
-  const convertToReactNode = (value: unknown): React.ReactNode => {
-    if (value === null || value === undefined) {
-      return '';
-    } else if (typeof value === 'boolean') {
-      return value;
-    } else if (typeof value === 'string' || typeof value === 'number') {
-      return value;
-    } else {
-      return '';
-    }
-  };
+  const {
+    paginatedData,
+    pagination,
+    handleChangePage,
+    handleChangePageSize
+  } = usePagination({data, pageSize: 5 });
 
   const getStyle = (icon: 'edit' | 'delete' | 'view') => {
     switch (icon) {
@@ -136,9 +60,21 @@ export const TableCustom = <T,>({
     }
   }
 
+  const renderRow = (value: unknown): React.ReactNode => {
+    if (value === null || value === undefined) {
+      return '';
+    } else if (typeof value === 'boolean') {
+      return value;
+    } else if (typeof value === 'string' || typeof value === 'number') {
+      return value;
+    } else {
+      return '';
+    }
+  };  
+
   return (
     <div className="overflow-x-auto shadow-md sm:rounded-lg">
-      <div className="w-full flex items-center justify-between gap-2 px-6 py-4">
+      {/* <div className="w-full flex items-center justify-between gap-2 px-6 py-4">
         <input
           type="text"
           placeholder="Buscar..."
@@ -146,7 +82,7 @@ export const TableCustom = <T,>({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-      </div>
+      </div> */}
 
       <table className="w-full text-sm text-left rtl:text-right">
         <thead className="">
@@ -174,7 +110,7 @@ export const TableCustom = <T,>({
           </tr>
         </thead>
         <tbody>
-          {finalData.map((item, index) => (
+          {paginatedData.map((item, index) => (
             <tr
               key={index}
               className="text-gray-900 border-b bg-white"
@@ -184,7 +120,7 @@ export const TableCustom = <T,>({
                   key={String(accessor)}
                   className="text-nowrap px-4 py-2"
                 >
-                  {convertToReactNode(item[accessor])}
+                  {renderRow(item[accessor])}
                 </td>
               ))}
               {controls.length > 0 && (
