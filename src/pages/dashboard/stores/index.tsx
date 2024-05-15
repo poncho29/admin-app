@@ -41,8 +41,8 @@ const columns: Column<Store>[] = [
 
 const searchableFields: (keyof Store)[] = ['name', 'location', 'category', 'price', 'paymentDate'];
 
-export const Stores = () => {
-  const [crateStore, setCrateStore] = useState(false);
+export const StoresPage = () => {
+  const [modalCreate, setModalCreate] = useState(false);
 
   return (
     <div className="w-full">
@@ -51,7 +51,7 @@ export const Stores = () => {
         
         <Buttom
           customClass="max-w-[160px] flex items-center gap-2 bg-green-500 hover:bg-green-600"
-          onClick={() => setCrateStore(true)}
+          onClick={() => setModalCreate(true)}
         >
           <IoMdAdd size={24} />
           Crear Tienda
@@ -76,7 +76,7 @@ export const Stores = () => {
         searchableFields={searchableFields}
       />
 
-      <Modal isOpen={crateStore} onClose={() => setCrateStore(false)}>
+      <Modal isOpen={modalCreate} onClose={() => setModalCreate(false)}>
         <form className="md:w-96 p-4">
           <h2 className="text-xl text-center font-bold uppercase mb-4">Crear Tienda</h2>
 
@@ -99,5 +99,5 @@ export const Stores = () => {
         </form>
       </Modal>
     </div>
-  )
+  ) 
 }

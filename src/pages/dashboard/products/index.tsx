@@ -4,54 +4,54 @@ import { IoMdAdd } from "react-icons/io";
 
 import { Buttom, Column, InputText, Modal, TableCustom } from "../../../components";
 
-import { users } from "../../../assets/data";
+import { products } from "../../../assets/data";
 
-import { User } from "../../../interfaces";
+import { Product } from "../../../interfaces";
 
-const columns: Column<User>[] = [
+const columns: Column<Product>[] = [
   {
-    header: 'Nombre',
-    accessor: 'name'
+    header: 'Producto',
+    accessor: 'product'
   },
   {
-    header: 'Correo',
-    accessor: 'email'
+    header: 'Código',
+    accessor: 'code'
   },
   {
-    header: 'Cedula',
-    accessor: 'cedula'
+    header: 'Precio',
+    accessor: 'price'
   },
   {
-    header: 'Nombre de la tienda',
-    accessor: 'nameStore'
+    header: 'Cantidad',
+    accessor: 'quantity'
   },
   {
-    header: 'Ciudad',
-    accessor: 'city'
+    header: 'Proveedor',
+    accessor: 'supplier'
   }
 ];
 
 // const searchableFields: (keyof User)[] = ['name', 'email', 'cedula', 'nameStore', 'city'];
 
-export const UsersPage = () => {
+export const ProductsPage = () => {
   const [modalCreate, setModalCreate] = useState(false);
   
   return (
     <>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Listado de usuarios</h2>
+        <h2 className="text-2xl font-bold">Listado de productos</h2>
         
         <Buttom
           customClass="max-w-[160px] flex items-center gap-2 bg-green-500 hover:bg-green-600"
           onClick={() => setModalCreate(true)}
         >
           <IoMdAdd size={24} />
-          Crear usuario
+          Crear producto
         </Buttom>
       </div>
       
       <TableCustom
-        data={users}
+        data={products}
         columns={columns}
         controls={[
           {
@@ -69,17 +69,17 @@ export const UsersPage = () => {
 
       <Modal isOpen={modalCreate} onClose={() => setModalCreate(false)}>
         <form className="md:w-96 p-4">
-          <h2 className="text-xl text-center font-bold uppercase mb-4">Crear Usuario</h2>
+          <h2 className="text-xl text-center font-bold uppercase mb-4">Crear Producto</h2>
 
-          <InputText label="Nombre *" name="name" type="text" />
+          <InputText label="Producto *" name="product" type="text" />
 
-          <InputText label="Apellidos *" name="apellidos" type="text" />
+          <InputText label="Código *" name="code" type="text" />
 
-          <InputText label="Email *" name="email" type="text" />
+          <InputText label="Precio *" name="price" type="number" />
 
-          <InputText label="Teléfono *" name="status" type="text" />
+          <InputText label="Cantidad *" name="quantity" type="number" />
 
-          <InputText label="Fecha de nacimiento *" name="birthDate" type="text" />
+          <InputText label="Proveedor *" name="supplier" type="text" />
 
           <div className="w-full flex flex-col md:flex-row md:gap-2">
             <Buttom type="submit" customClass="w-full mt-4 bg-red-500 hover:bg-red-600">Cancelar</Buttom>

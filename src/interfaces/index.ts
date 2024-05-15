@@ -5,4 +5,7 @@ export * from './auth';
 export * from './store';
 
 // User
-export * from './user'
+export * from './user';
+
+// Product
+export * from './Product';

@@ -6,8 +6,9 @@ import {
   Login,
   Register,
   RecoverPassword,
-  Stores,
-  Users
+  StoresPage,
+  UsersPage,
+  ProductsPage
 } from "../pages";
 
 export const routes = createBrowserRouter([
@@ -40,11 +41,15 @@ export const routes = createBrowserRouter([
         children: [
           {
             path: "/dashboard",
-            element: <Stores />
+            element: <StoresPage />
           },
           {
             path: "/dashboard/users",
-            element: <Users />
+            element: <UsersPage />
+          },
+          {
+            path: "/dashboard/products",
+            element: <ProductsPage />
           }
         ]
       }
