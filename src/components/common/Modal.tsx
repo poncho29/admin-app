@@ -4,17 +4,18 @@ import '../../styles/modal.css';
 
 interface Props {
   isOpen: boolean;
+  maxWidth?: string;
   onClose: () => void;
   children: React.ReactNode;
 }
 
-export const Modal = ({ isOpen, onClose, children }: Props ) => {
+export const Modal = ({ isOpen, maxWidth, children, onClose }: Props ) => {
   return (
     <div
       className={`modal ${isOpen ? 'modal-show' : 'modal-hide'}`}
     >
       <div
-        className="modal-container"
+        className={`modal-container ${maxWidth}`}
       >
         <IoMdClose
           size={24}

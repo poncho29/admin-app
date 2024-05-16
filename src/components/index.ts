@@ -9,7 +9,6 @@ export * from './common/Buttom';
 export * from './common/Modal';
 export * from './common/PaginationTable';
 export * from './common/SpanLink';
-export * from './common/Table';
 export * from './common/TableCustom';
 
 // Form

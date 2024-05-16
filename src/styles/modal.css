@@ -1,3 +1,21 @@
+@keyframes slideIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
 .modal {
   position: fixed;
   top: 0;
@@ -11,18 +29,21 @@
   background-color: rgba(0, 0, 0, 0.6);
 }
 
-.modal-hide {
-  display: none;
-}
-
 .modal-show {
   display: flex;
+  animation: slideIn 0.3s forwards;
 }
+
+.modal-hide {
+  animation: slideOut 0.3s forwards;
+}
+
 
 .modal-container {
   position: relative;
   width: 100%;
   height: 100%;
+  margin: 0 auto;
   border-radius: 1rem;
   background-color: white;
   overflow: auto;
@@ -36,12 +57,13 @@
 
 @media (min-width: 768px) {
   .modal-container {
+    /* max-width: 24rem; */
     width: auto;
   }
 }
 
 @media (min-width: 768px) and (min-height: 564px) {
   .modal-container {
-    height: auto;
+    height: auto;    
   }
 }
