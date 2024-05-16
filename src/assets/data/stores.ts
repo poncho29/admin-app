@@ -1,6 +1,42 @@
+
+import { Column } from "../../components";
+
 import { Store } from "../../interfaces";
 
 import ImageStore from '../images/licorera.jpg';
+
+export const storeColumns: Column<Store>[] = [
+  {
+    header: 'Nombre',
+    accessor: 'name',
+    sorteable: true
+  },
+  {
+    header: 'Ubicación',
+    accessor: 'location',
+    sorteable: true
+  },
+  {
+    header: 'Categoría',
+    accessor: 'category',
+    sorteable: true
+  },
+  {
+    header: 'Estado',
+    accessor: 'status'
+  },
+  {
+    header: 'Precio',
+    accessor: 'price'
+  },
+  {
+    header: 'Fecha de pago',
+    accessor: 'paymentDate',
+    sorteable: true
+  }
+];
+
+export const storeSearchableFields: (keyof Store)[] = ['name', 'location', 'category', 'price', 'paymentDate'];
 
 export const stores: Store[] = [
   {

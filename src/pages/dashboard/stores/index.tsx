@@ -1,66 +1,22 @@
 import { useState } from "react";
 
-import { IoMdAdd } from "react-icons/io";
+import { PageLayout } from "../../../layouts";
 
-import { Buttom, InputText, Modal, Column, TableCustom } from "../../../components";
+import { Buttom, InputText, Modal, TableCustom } from "../../../components";
 
-import { stores } from "../../../assets/data";
-
-import { Store } from "../../../interfaces";
-
-const columns: Column<Store>[] = [
-  {
-    header: 'Nombre',
-    accessor: 'name',
-    sorteable: true
-  },
-  {
-    header: 'Ubicación',
-    accessor: 'location',
-    sorteable: true
-  },
-  {
-    header: 'Categoría',
-    accessor: 'category',
-    sorteable: true
-  },
-  {
-    header: 'Estado',
-    accessor: 'status'
-  },
-  {
-    header: 'Precio',
-    accessor: 'price'
-  },
-  {
-    header: 'Fecha de pago',
-    accessor: 'paymentDate',
-    sorteable: true
-  }
-];
-
-const searchableFields: (keyof Store)[] = ['name', 'location', 'category', 'price', 'paymentDate'];
+import { storeColumns, storeSearchableFields, stores } from "../../../assets/data";
 
 export const StoresPage = () => {
   const [modalCreate, setModalCreate] = useState(false);
 
   return (
-    <div className="w-full">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Listado de Tiendas</h2>
-        
-        <Buttom
-          customClass="max-w-[160px] flex items-center gap-2 bg-green-500 hover:bg-green-600"
-          onClick={() => setModalCreate(true)}
-        >
-          <IoMdAdd size={24} />
-          Crear Tienda
-        </Buttom>
-      </div>
-
+    <PageLayout
+      title="Listado de Tiendas"
+      onClickButton={() => setModalCreate(true)}
+    >
       <TableCustom
         data={stores}
-        columns={columns}
+        columns={storeColumns}
         controls={[
           {
             icon: 'edit',
@@ -73,7 +29,7 @@ export const StoresPage = () => {
             onClick: (item) => console.log(item)
           }
         ]}
-        searchableFields={searchableFields}
+        searchableFields={storeSearchableFields}
       />
 
       <Modal isOpen={modalCreate} onClose={() => setModalCreate(false)}>
@@ -98,6 +54,6 @@ export const StoresPage = () => {
           </div>
         </form>
       </Modal>
-    </div>
+    </PageLayout>
   ) 
 }

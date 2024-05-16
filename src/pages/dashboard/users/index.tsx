@@ -1,58 +1,22 @@
 import { useState } from "react";
 
-import { IoMdAdd } from "react-icons/io";
+import { PageLayout } from "../../../layouts";
 
-import { Buttom, Column, InputText, Modal, TableCustom } from "../../../components";
+import { Buttom, InputText, Modal, TableCustom } from "../../../components";
 
-import { users } from "../../../assets/data";
-
-import { User } from "../../../interfaces";
-
-const columns: Column<User>[] = [
-  {
-    header: 'Nombre',
-    accessor: 'name'
-  },
-  {
-    header: 'Correo',
-    accessor: 'email'
-  },
-  {
-    header: 'Cedula',
-    accessor: 'cedula'
-  },
-  {
-    header: 'Nombre de la tienda',
-    accessor: 'nameStore'
-  },
-  {
-    header: 'Ciudad',
-    accessor: 'city'
-  }
-];
-
-// const searchableFields: (keyof User)[] = ['name', 'email', 'cedula', 'nameStore', 'city'];
+import { userColumns, users } from "../../../assets/data";
 
 export const UsersPage = () => {
   const [modalCreate, setModalCreate] = useState(false);
   
   return (
-    <>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Listado de usuarios</h2>
-        
-        <Buttom
-          customClass="max-w-[160px] flex items-center gap-2 bg-green-500 hover:bg-green-600"
-          onClick={() => setModalCreate(true)}
-        >
-          <IoMdAdd size={24} />
-          Crear usuario
-        </Buttom>
-      </div>
-      
+    <PageLayout
+      title="Listado de usuarios"
+      onClickButton={() => setModalCreate(true)}
+    >      
       <TableCustom
         data={users}
-        columns={columns}
+        columns={userColumns}
         controls={[
           {
             icon: 'edit',
@@ -87,6 +51,6 @@ export const UsersPage = () => {
           </div>
         </form>
       </Modal>
-    </>
+    </PageLayout>
   )
 }

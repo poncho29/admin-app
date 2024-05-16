@@ -1,6 +1,33 @@
+import { Column } from '../../components';
+
 import { User } from '../../interfaces';
 
 import Avatar from '../images/avatar.png';
+
+export const userColumns: Column<User>[] = [
+  {
+    header: 'Nombre',
+    accessor: 'name'
+  },
+  {
+    header: 'Correo',
+    accessor: 'email'
+  },
+  {
+    header: 'Cedula',
+    accessor: 'cedula'
+  },
+  {
+    header: 'Nombre de la tienda',
+    accessor: 'nameStore'
+  },
+  {
+    header: 'Ciudad',
+    accessor: 'city'
+  }
+];
+
+export const userSearchableFields: (keyof User)[] = ['name', 'email', 'cedula', 'nameStore', 'city'];
 
 export const users: User[] = [
   {

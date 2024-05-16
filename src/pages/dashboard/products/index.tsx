@@ -1,58 +1,23 @@
 import { useState } from "react";
 
-import { IoMdAdd } from "react-icons/io";
+import { PageLayout } from "../../../layouts";
 
-import { Buttom, Column, InputText, Modal, TableCustom } from "../../../components";
+import { Buttom, InputText, Modal, TableCustom } from "../../../components";
 
-import { products } from "../../../assets/data";
+import { productColumns, products } from "../../../assets/data";
 
-import { Product } from "../../../interfaces";
-
-const columns: Column<Product>[] = [
-  {
-    header: 'Producto',
-    accessor: 'product'
-  },
-  {
-    header: 'Código',
-    accessor: 'code'
-  },
-  {
-    header: 'Precio',
-    accessor: 'price'
-  },
-  {
-    header: 'Cantidad',
-    accessor: 'quantity'
-  },
-  {
-    header: 'Proveedor',
-    accessor: 'supplier'
-  }
-];
-
-// const searchableFields: (keyof User)[] = ['name', 'email', 'cedula', 'nameStore', 'city'];
 
 export const ProductsPage = () => {
   const [modalCreate, setModalCreate] = useState(false);
   
   return (
-    <>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Listado de productos</h2>
-        
-        <Buttom
-          customClass="max-w-[160px] flex items-center gap-2 bg-green-500 hover:bg-green-600"
-          onClick={() => setModalCreate(true)}
-        >
-          <IoMdAdd size={24} />
-          Crear producto
-        </Buttom>
-      </div>
-      
+    <PageLayout
+      title="Listado de productos"
+      onClickButton={() => setModalCreate(true)}
+    >      
       <TableCustom
         data={products}
-        columns={columns}
+        columns={productColumns}
         controls={[
           {
             icon: 'edit',
@@ -87,6 +52,6 @@ export const ProductsPage = () => {
           </div>
         </form>
       </Modal>
-    </>
+    </PageLayout>
   )
 }

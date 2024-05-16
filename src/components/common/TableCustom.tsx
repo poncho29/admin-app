@@ -5,12 +5,7 @@ import { usePagination, useTableFilter } from "../../hooks";
 import { Buttom } from "./Buttom";
 import { PaginationTable } from "./PaginationTable";
 
-export type Column<T> = {
-  header: string;
-  accessor: keyof T;
-  sorteable?: boolean;
-  sortOrder?: 'asc' | 'desc' | null;
-}
+import { Column } from "../../interfaces";
 
 interface Props <T>{
   data: T[];

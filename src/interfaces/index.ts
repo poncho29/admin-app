@@ -1,11 +1,21 @@
+// -----------------------------------
+// COMPONENTS INTERFACES
+// -----------------------------------
+// Table
+export * from './components/table';
+
+// -----------------------------------
+// PAGES INTERFACES
+// -----------------------------------
 // Auth
-export * from './auth';
+export * from './pages/auth';
 
 // Store
-export * from './store';
+export * from './pages/store';
 
 // User
-export * from './user';
+export * from './pages/user';
 
 // Product
-export * from './Product';
+export * from './pages/Product';
+

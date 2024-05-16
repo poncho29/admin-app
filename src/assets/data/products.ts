@@ -1,4 +1,29 @@
-import { Product } from "../../interfaces";
+import { Column, Product } from "../../interfaces";
+
+export const productColumns: Column<Product>[] = [
+  {
+    header: 'Producto',
+    accessor: 'product'
+  },
+  {
+    header: 'Código',
+    accessor: 'code'
+  },
+  {
+    header: 'Precio',
+    accessor: 'price'
+  },
+  {
+    header: 'Cantidad',
+    accessor: 'quantity'
+  },
+  {
+    header: 'Proveedor',
+    accessor: 'supplier'
+  }
+];
+
+// const productSearchableFields: (keyof User)[] = ['name', 'email', 'cedula', 'nameStore', 'city'];
 
 export const products: Product[] = [
   {
